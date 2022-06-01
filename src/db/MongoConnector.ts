@@ -22,7 +22,7 @@ export class MongoConnector {
 	public skippedRoles: SkippedRolesRepository
 
 	constructor(config: Config, logger: Logger) {
-		const uri = `mongodb+srv://${config.mongoName}:${config.mongoPassword}@${config.mongoCluster}`
+		const uri = `mongodb://${config.mongoName}:${config.mongoPassword}@${config.mongoCluster}`
 		this.client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
 
 		this.client.connect((err) => {

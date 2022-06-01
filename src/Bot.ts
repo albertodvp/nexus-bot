@@ -45,9 +45,6 @@ export class Bot {
 
 		// for testing changes in the slash commands immediately
 		// global commands will be 100% available in 1 hour after the registration
-		rest.put(`/applications/${this.config.applicationId}/guilds/${this.config.testServer}/commands`, { body: commands })
-			.catch(reason => this.logger.logError(this.constructor.name, this.start.name, reason))
-
 		rest.put(`/applications/${this.config.applicationId}/commands`, { body: commands })
 			.catch(reason => this.logger.logError(this.constructor.name, this.start.name, reason))
 

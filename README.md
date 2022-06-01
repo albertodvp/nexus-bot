@@ -21,3 +21,43 @@ If you have any issue with the bot functionality, feel free to post an issue in 
 ## Need any adjustments?
 If you feel some cool feature is missing, or you want to make some minor tweaks just for your quality of life - feel free to either post an issue in the repo or make a fork and adjust it yourself as you see fit.  
 Please bear in mind: I intend to leave this bot single-purpose, meaning I won't add features which are not related to the idea of creating combined voice-text channels.
+
+## Step-by-step guide (self-host)
+For this setup, the only requirements you need are `docker` and `docker-compose`.
+### Clone the repo
+Clone this repository
+
+### Build and run the containers
+```bash
+docker-compose up --build -d
+```
+
+### Setup mongo user
+Inside the mongo container, which should be running:
+```bash
+docker exec -it nexus-bot_mongo_1 mongo
+```
+Create the user, and store the `PASSWORD` somewhere.
+```javascript
+use admin
+db.createUser({ user: "admin" , pwd: <<PASSWORD>>, roles: ["readWriteAnyDatabase"]})
+```
+
+### Complete the bot configuration file
+#### Take info from discord developer portal
+- Create an application on discord developers portal [here](https://discord.com/developers/applications) and get the `application id` and the the `client_id`
+- Create an associated bot and generate and save the `token`
+#### Create the `.env` file from the sample
+```bash
+cp .env.sample .env
+```
+You should then change the values of these keys: `APPLICATION_ID`, `TOKEN`,`'NODE_ENV` (from `DEBUG` to `PRODUCTION`), `MONGO_PWD` (with the `PASSWORD` defined above)
+#### Prepare a link to import the bot
+This is the template of the link
+https://discord.com/api/oauth2/authorize?client_id={YOUR_CLIENT_ID}&permissions=53955783696&scope=bot%20applications.commands
+
+https://discord.com/api/oauth2/authorize?client_id=980522901528784940&permissions=53955783696&scope=bot%20applications.commands
+### Redeploy
+```bash
+docker-compose up --build -d
+```
